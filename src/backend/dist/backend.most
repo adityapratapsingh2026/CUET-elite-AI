@@ -1,0 +1,85 @@
+// Version: 1.0.0
+type Badge__398115399 = {id : Text; unlockedAt : Timestamp__778030842};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Difficulty__380943181 = Difficulty__971497521;
+type Difficulty__971497521 = {#Easy; #Hard; #Medium};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Level__1063584005 = {#Amateur; #Beginner; #Expert; #Scholar; #Topper};
+type Level__822142620 = Level__1063584005;
+type MockTestResult__614069633 =
+  {
+    accuracy : Float;
+    id : Nat;
+    score : Nat;
+    sectionBreakdown : [SectionBreakdown__40921798];
+    testName : Text;
+    timeTaken : Nat;
+    timestamp : Timestamp__787673400;
+    totalQuestions : Nat;
+    userId : UserId__363132630
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type QuizResult__84614529 =
+  {
+    accuracy : Float;
+    difficulty : Difficulty__380943181;
+    id : Nat;
+    score : Nat;
+    subject : Subject__698040493;
+    timeTaken : Nat;
+    timestamp : Timestamp__787673400;
+    totalQuestions : Nat;
+    userId : UserId__363132630
+  };
+type SectionBreakdown__40921798 =
+  {accuracy : Float; score : Nat; subject : Subject__698040493; total : Nat};
+type Subject__698040493 = Subject__800708213;
+type Subject__800708213 =
+  {#Accounts; #BusinessStudies; #English; #GeneralTest; #Maths};
+type Timestamp__301639476 = Int;
+type Timestamp__778030842 = Timestamp__301639476;
+type Timestamp__787673400 = Timestamp__301639476;
+type UserId__1043627770 = UserId__158757552;
+type UserId__158757552 = Principal;
+type UserId__363132630 = UserId__158757552;
+type UserProfile__277265826 =
+  {
+    var avatarUrl : Text;
+    var badges : [Badge__398115399];
+    var bestStreak : Nat;
+    var currentStreak : Nat;
+    var currentXP : Nat;
+    var email : Text;
+    id : UserId__1043627770;
+    joinDate : Timestamp__778030842;
+    var lastStudyDate : ?Text;
+    var level : Level__822142620;
+    var name : Text
+  };
+actor {
+  stable mockCounter : {var value : Nat};
+  stable mockTestResults :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?MockTestResult__614069633]];
+      var elementIndex : Nat__490723111
+    };
+  stable quizCounter : {var value : Nat};
+  stable quizResults :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?QuizResult__84614529]];
+      var elementIndex : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__277265826>;
+      var size : Nat__490723111
+    }
+};

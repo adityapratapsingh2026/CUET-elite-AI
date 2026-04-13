@@ -1,0 +1,156 @@
+type XPAwardResult = 
+ record {
+   leveledUp: bool;
+   newLevel: Level;
+   newTotalXP: nat;
+   xpAwarded: nat;
+ };
+type UserProfilePublic = 
+ record {
+   avatarUrl: text;
+   badges: vec Badge;
+   bestStreak: nat;
+   currentStreak: nat;
+   currentXP: nat;
+   email: text;
+   id: UserId;
+   joinDate: Timestamp;
+   lastStudyDate: opt text;
+   level: Level;
+   name: text;
+ };
+type UserId = principal;
+type UpdateUserArgs = 
+ record {
+   avatarUrl: text;
+   email: text;
+   name: text;
+ };
+type Timestamp = int;
+type Subject = 
+ variant {
+   Accounts;
+   BusinessStudies;
+   English;
+   GeneralTest;
+   Maths;
+ };
+type StreakInfo = 
+ record {
+   bestStreak: nat;
+   currentStreak: nat;
+   isTodayCompleted: bool;
+   lastCompletedDate: opt text;
+ };
+type SectionBreakdown = 
+ record {
+   accuracy: float64;
+   score: nat;
+   subject: Subject;
+   total: nat;
+ };
+type SaveQuizResultArgs = 
+ record {
+   accuracy: float64;
+   difficulty: Difficulty;
+   score: nat;
+   subject: Subject;
+   timeTaken: nat;
+   totalQuestions: nat;
+ };
+type SaveMockTestResultArgs = 
+ record {
+   accuracy: float64;
+   score: nat;
+   sectionBreakdown: vec SectionBreakdown;
+   testName: text;
+   timeTaken: nat;
+   totalQuestions: nat;
+ };
+type RegisterUserArgs = 
+ record {
+   avatarUrl: text;
+   email: text;
+   name: text;
+ };
+type QuizResult = 
+ record {
+   accuracy: float64;
+   difficulty: Difficulty;
+   id: nat;
+   score: nat;
+   subject: Subject;
+   timeTaken: nat;
+   timestamp: Timestamp;
+   totalQuestions: nat;
+   userId: UserId;
+ };
+type MockTestResult = 
+ record {
+   accuracy: float64;
+   id: nat;
+   score: nat;
+   sectionBreakdown: vec SectionBreakdown;
+   testName: text;
+   timeTaken: nat;
+   timestamp: Timestamp;
+   totalQuestions: nat;
+   userId: UserId;
+ };
+type Level = 
+ variant {
+   Amateur;
+   Beginner;
+   Expert;
+   Scholar;
+   Topper;
+ };
+type LeaderboardEntry = 
+ record {
+   avatarUrl: text;
+   currentXP: nat;
+   level: Level;
+   name: text;
+   rank: nat;
+   userId: UserId;
+ };
+type Difficulty = 
+ variant {
+   Easy;
+   Hard;
+   Medium;
+ };
+type BadgeAwardResult = 
+ record {
+   alreadyHad: bool;
+   badgeId: text;
+   unlockedAt: Timestamp;
+ };
+type Badge = 
+ record {
+   id: text;
+   unlockedAt: Timestamp;
+ };
+type AwardXPArgs = 
+ record {
+   accuracy: float64;
+   difficulty: Difficulty;
+   userId: UserId;
+ };
+service : {
+  awardBadge: (userId: UserId, badgeId: text) -> (opt BadgeAwardResult);
+  awardXP: (args: AwardXPArgs) -> (opt XPAwardResult);
+  calculateLevel: (xp: nat) -> (Level) query;
+  completeDailyChallenge: () -> (opt StreakInfo);
+  getLeaderboard: () -> (vec LeaderboardEntry) query;
+  getMyMockTestHistory: () -> (vec MockTestResult) query;
+  getMyProfile: () -> (opt UserProfilePublic) query;
+  getMyQuizHistory: () -> (vec QuizResult) query;
+  getStreakInfo: () -> (opt StreakInfo) query;
+  getUser: (userId: UserId) -> (opt UserProfilePublic) query;
+  isTodayChallengeCompleted: () -> (bool) query;
+  registerUser: (args: RegisterUserArgs) -> (UserProfilePublic);
+  saveMockTestResult: (args: SaveMockTestResultArgs) -> (MockTestResult);
+  saveQuizResult: (args: SaveQuizResultArgs) -> (QuizResult);
+  updateUser: (args: UpdateUserArgs) -> (opt UserProfilePublic);
+}
